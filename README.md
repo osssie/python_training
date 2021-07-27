@@ -1,1 +1,1 @@
-# python_training
+# repository of Voselei QA department practice

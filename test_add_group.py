@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest
+from group import Group
+
 
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
@@ -15,7 +17,19 @@ class TestAddGroup(unittest.TestCase):
         self.addressbook_login(wd, username="admin", password="secret")
         self.addressbook_opn_group_pge(wd)
         self.addressbook_new_group(wd)
-        self.addressbook_fill_group_creation_form(wd, group_name="new test group", group_header="aaa", group_footer="eee")
+        self.addressbook_fill_group_creation_form(wd, Group(name="new test group", header="aaa", footer="eee"))
+        self.addressbook_submit_group_creation(wd)
+        self.addressbook_click_home(wd)
+        self.addressbook_opn_group_pge(wd)
+        self.addressbook_logout(wd)
+
+    def test_add_empty_group(self):
+        wd = self.wd
+        self.addressbook_open_homepage(wd)
+        self.addressbook_login(wd, username="admin", password="secret")
+        self.addressbook_opn_group_pge(wd)
+        self.addressbook_new_group(wd)
+        self.addressbook_fill_group_creation_form(wd, Group(name="", header="", footer=""))
         self.addressbook_submit_group_creation(wd)
         self.addressbook_click_home(wd)
         self.addressbook_opn_group_pge(wd)
@@ -30,14 +44,14 @@ class TestAddGroup(unittest.TestCase):
     def addressbook_submit_group_creation(self, wd):
         wd.find_element_by_name("submit").click()
 
-    def addressbook_fill_group_creation_form(self, wd, group_name, group_header, group_footer):
+    def addressbook_fill_group_creation_form(self, wd, group):
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group_name)
+        wd.find_element_by_name("group_name").send_keys(group.name)
         wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group_header)
+        wd.find_element_by_name("group_header").send_keys(group.header)
         wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group_footer)
+        wd.find_element_by_name("group_footer").send_keys(group.footer)
 
     def addressbook_new_group(self, wd):
         wd.find_element_by_name("new").click()

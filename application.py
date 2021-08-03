@@ -55,5 +55,5 @@ class Application:
         wd.find_element_by_link_text("Logout").click()
 
 
-    def destroy(self):
+    def tearDown(self):
         self.wd.quit()

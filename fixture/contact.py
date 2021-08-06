@@ -3,13 +3,13 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def addressbook_add_new(self):
+    def add_new(self):
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
 
-    def addressbook_create(self, contact):
+    def create(self, contact):
         wd = self.app.wd
-        self.addressbook_add_new()
+        self.add_new()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").send_keys(contact.name)
         wd.find_element_by_name("middlename").click()
@@ -32,8 +32,8 @@ class ContactHelper:
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").send_keys(contact.byear)
         wd.find_element_by_name("theform").click()
-        self.addressbook_submit()
+        self.submit()
 
-    def addressbook_submit(self):
+    def submit(self):
         wd = self.app.wd
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()

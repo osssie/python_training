@@ -54,8 +54,7 @@ class ContactHelper:
         self.fill(contact)
         self.submit()
 
-    def edit(self, contact):
-        wd = self.app.wd
+    def edit_first(self, contact):
         self.open()
         self.edit_first()
         self.fill(contact)

@@ -72,3 +72,7 @@ class GroupHelper:
         self.update()
         self.open()
 
+    def count(self):
+        wd = self.app.wd
+        self.open()
+        return len(wd.find_elements_by_name("selected[]"))

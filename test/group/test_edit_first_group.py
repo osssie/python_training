@@ -9,7 +9,7 @@ def test_edit_first_group(app):
     group = Group(name="Rename", header="header", footer="footer")
     group.id = old_groups[0].id
     app.group.edit(group)
+    assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)

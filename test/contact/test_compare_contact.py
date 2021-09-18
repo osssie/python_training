@@ -4,12 +4,10 @@ from random import randrange
 import re
 
 
-def test_compare_contact_on_homepage(app):
+def test_compare_contact_on_homepage(app, data_contacts):
+    contact = data_contacts
     if app.contact.count() == 0:
-        app.contact.create(Contact(name="Mary", middlename="M", lastname="Marvel", nickname="Mary",
-                                            title="Lead", company="Test", address="none", phone_home="09893333333",
-                                            phone_mobile="09897776632", phone_work="09897776631", phone_secondary="0333",
-                                            email="mary@a.cto", bday="4", bmonth="August", byear="1995"))
+        app.contact.create(contact)
     contact_from_home_page = app.contact.get_contacts_list()[0]
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
 
@@ -21,12 +19,10 @@ def test_compare_contact_on_homepage(app):
     assert contact_from_home_page.all_emails_from_home_page == merge_emails_like_on_home_page(contact_from_edit_page)
 
 
-def test_compare_contact_on_viewpage(app):
+def test_compare_contact_on_viewpage(app, data_contacts):
+    contact = data_contacts
     if app.contact.count() == 0:
-        app.contact.create(Contact(name="Mary", middlename="M", lastname="Marvel", nickname="Mary",
-                                            title="Lead", company="Test", address="none", phone_home="09893333333",
-                                            phone_mobile="09897776632", phone_work="09897776631", phone_secondary="0333",
-                                            email="mary@a.cto", bday="4", bmonth="August", byear="1995"))
+        app.contact.create(contact)
     old_contacts = app.contact.get_contacts_list()
     index = randrange(len(old_contacts))
     contact = Contact()

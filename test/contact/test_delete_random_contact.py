@@ -3,9 +3,10 @@ from model.contact import Contact
 from random import randrange
 
 
-def test_delete_random_contact(app):
+def test_delete_random_contact(app, data_contacts):
+    contact = data_contacts
     if app.contact.count() == 0:
-        app.contact.create(Contact(name="Editable", middlename="E", lastname="Contact"))
+        app.contact.create(contact)
     old_contacts = app.contact.get_contacts_list()
     index = randrange(len(old_contacts))
     app.contact.delete_contact_by_index(index)

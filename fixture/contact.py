@@ -10,7 +10,7 @@ class ContactHelper:
     def open(self):
         wd = self.app.wd
         if not (wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_name("Send e-Mail")) > 0):
-            wd.get("http://localhost/addressbook/index.php")
+            wd.find_element_by_link_text("home").click()
 
     def add_new(self):
         wd = self.app.wd

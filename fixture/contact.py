@@ -20,6 +20,13 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
 
+    def edit_contact_by_id(self, id):
+        wd = self.app.wd
+        element = wd.find_element_by_css_selector("input[id='%s']" % id)
+        row = element.find_element_by_xpath(".//ancestor::tr")
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name("a").click()
+
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
@@ -61,6 +68,14 @@ class ContactHelper:
         self.open()
         self.contact_cache = None
 
+    def modify_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.edit_contact_by_id(id)
+        self.fill_contact_form(contact)
+        wd.find_element_by_name("update").click()
+        self.app.open_homepage()
+        self.contact_cache = None
+
     def submit(self):
         wd = self.app.wd
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
@@ -79,6 +94,10 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def delete_contact_by_index(self,index):
         wd = self.app.wd
         self.open()
@@ -86,6 +105,15 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
         self.open()
+        self.contact_cache = None
+
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_homepage()
+        self.select_contact_by_id(id)
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        self.app.open_homepage()
         self.contact_cache = None
 
     def count(self):
@@ -131,59 +159,58 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_to_edit_by_index(index)
         name = wd.find_element_by_name("firstname").get_attribute("value")
-        # print("name " + name)
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
-        # print("lastname " + lastname)
         id = wd.find_element_by_name("id").get_attribute("value")
-        # print("id " + id)
         phone_home = wd.find_element_by_name("home").get_attribute("value")
-        # print("phone_home " + phone_home)
         phone_mobile = wd.find_element_by_name("mobile").get_attribute("value")
-        # print("phone_mobile " + phone_mobile)
         phone_work = wd.find_element_by_name("work").get_attribute("value")
-        # print("phone_work " + phone_work)
         phone_secondary = wd.find_element_by_name("phone2").get_attribute("value")
-        # print("phone_secondary " + phone_secondary)
         address = wd.find_element_by_name("address").get_attribute("value")
-        # print("address " + address)
         email = wd.find_element_by_name("email").get_attribute("value")
-        # print("email "+ email)
         email2 = wd.find_element_by_name("email2").get_attribute("value")
-        # print("email2 " + email2)
         email3 = wd.find_element_by_name("email3").get_attribute("value")
+        # print("name " + name)
+        # print("lastname " + lastname)
+        # print("id " + id)
+        # print("phone_home " + phone_home)
+        # print("phone_mobile " + phone_mobile)
+        # print("phone_work " + phone_work)
+        # print("phone_secondary " + phone_secondary)
+        # print("address " + address)
+        # print("email "+ email)
+        # print("email2 " + email2)
         # print("email3 " + email3)
         return Contact(name=name, lastname=lastname, id=id,
                        phone_home=phone_home, phone_mobile=phone_mobile, phone_work=phone_work,
                        phone_secondary=phone_secondary,
                        address=address, email=email, email2=email2, email3=email3)
 
-
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
         self.open_contact_view_by_index(index)
         text = wd.find_element_by_id("content").text
         split = re.split("\n", text, maxsplit=15)
-        # print(split)
         fullname = split[0]
-        # print(fullname)
         split1 = re.split((" "), fullname, maxsplit=2)
-        # print(split1)
         name = split1[0]
-        # print("name " + name)
         lastname = split1[2]
-        # print("lastname " + lastname)
         phone_home = re.search("H: (.*)", text).group(1)
-        # print("phone_home " + phone_home)
         phone_mobile = re.search("M: (.*)", text).group(1)
-        # print("phone_mobile " + phone_mobile)
         phone_work = re.search("W: (.*)", text).group(1)
-        # print("phone_work " + phone_work)
         phone_secondary = re.search("P: (.*)", text).group(1)
         address = split[4]
-        # print("address " + address)
         email = split[11]
         email2 = split[12]
         email3 = split[13]
+        # print(split)
+        # print(fullname)
+        # print(split1)
+        # print("name " + name)
+        # print("lastname " + lastname)
+        # print("phone_home " + phone_home)
+        # print("phone_mobile " + phone_mobile)
+        # print("phone_work " + phone_work)
+        # print("address " + address)
         # print("email " + email)
         # print("email2 " + email2)
         # print("email3 " + email3)

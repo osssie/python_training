@@ -219,6 +219,24 @@ class ContactHelper:
                        phone_secondary=phone_secondary,
                        address=address, email=email, email2=email2, email3=email3)
 
+    def add_contact_to_group(self, contact, add_to_group):
+        wd = self.app.wd
+        self.app.open_homepage()
+        self.select_contact_by_id(contact.id)
+        wd.find_element_by_css_selector('select[name="to_group"]').click()
+        wd.find_element_by_css_selector('select[name="to_group"] option[value="%s"]' % add_to_group.id).click()
+        wd.find_element_by_css_selector('input[value="Add to"]').click()
+        self.app.open_homepage()
+
+    def del_contact_to_group(self, contact, add_to_group):
+        wd = self.app.wd
+        self.app.open_homepage()
+        wd.find_element_by_css_selector('select[name="group"]').click()
+        wd.find_element_by_css_selector('select[name="group"] option[value="%s"]' % add_to_group.id).click()
+        self.select_contact_by_id(contact.id)
+        wd.find_element_by_css_selector('input[name="remove"]').click()
+        self.app.open_homepage()
+
 
 
 

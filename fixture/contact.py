@@ -1,4 +1,5 @@
 from model.contact import Contact
+from selenium.webdriver.support.select import Select
 import re
 
 
@@ -155,6 +156,26 @@ class ContactHelper:
         cell = row.find_elements_by_tag_name("td")[6]
         cell.find_element_by_tag_name('a').click()
 
+    def get_contact_by_id(self, id):
+        contact = Contact()
+        wd = self.app.wd
+        self.open()
+        table = wd.find_element_by_id("maintable")
+        rows = table.find_elements_by_name("entry")
+        for row in rows:
+            ind = row.find_element_by_name("selected[]").get_attribute("value")
+            if str(ind) == str(id):
+                cells = row.find_elements_by_tag_name("td")
+                name = cells[2].text
+                lastname = cells[1].text
+                address = cells[3].text
+                all_emails = cells[4].text
+                all_phones = cells[5].text
+                contact = Contact(id=id, name=name, lastname=lastname,
+                                  address=address, all_emails_from_home_page=all_emails,
+                                  all_phones_from_home_page=all_phones)
+        return contact
+
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
         self.open_contact_to_edit_by_index(index)
@@ -219,23 +240,23 @@ class ContactHelper:
                        phone_secondary=phone_secondary,
                        address=address, email=email, email2=email2, email3=email3)
 
-    def add_contact_to_group(self, contact, add_to_group):
+    def add_to_group_by_id(self, contact_id, group_name):
         wd = self.app.wd
         self.app.open_homepage()
-        self.select_contact_by_id(contact.id)
-        wd.find_element_by_css_selector('select[name="to_group"]').click()
-        wd.find_element_by_css_selector('select[name="to_group"] option[value="%s"]' % add_to_group.id).click()
-        wd.find_element_by_css_selector('input[value="Add to"]').click()
-        self.app.open_homepage()
+        wd.find_element_by_id(contact_id).click()
+        wd.find_element_by_name("to_group").click()
+        Select(wd.find_element_by_name("to_group")).select_by_visible_text(group_name)
+        wd.find_element_by_name("add").click()
 
-    def del_contact_to_group(self, contact, add_to_group):
+    def delete_from_group_by_id(self, contact_id, group_name):
         wd = self.app.wd
         self.app.open_homepage()
-        wd.find_element_by_css_selector('select[name="group"]').click()
-        wd.find_element_by_css_selector('select[name="group"] option[value="%s"]' % add_to_group.id).click()
-        self.select_contact_by_id(contact.id)
-        wd.find_element_by_css_selector('input[name="remove"]').click()
-        self.app.open_homepage()
+        wd.find_element_by_name("group").click()
+        Select(wd.find_element_by_name("group")).select_by_visible_text(group_name)
+        wd.find_element_by_id(contact_id).click()
+        wd.find_element_by_name("remove").click()
+        wd.find_element_by_link_text('group page "%s"' % group_name).click()
+
 
 
 

@@ -14,6 +14,9 @@ def test_edit_random_contact(app, db, check_ui):
                                             email="mary@a.cto", bday="4", bmonth="August", byear="1995"))
     new_contacts = db.get_contact_list()
     assert len(old_contacts) == app.contact.count()
+    new_contact = next(x for x in new_contacts if x.id == contact.id)
+    old_contacts.remove(contact)
+    old_contacts.append(new_contact)
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
     if check_ui:
         assert sorted(new_contacts, key=Contact.id_or_max) == sorted(app.group.get_contact_list(), key=Contact.id_or_max)

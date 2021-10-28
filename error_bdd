@@ -1,0 +1,170 @@
+C:\Users\Vasele\PycharmProjects\python_training\env\Scripts\python.exe "C:\Program Files\JetBrains\PyCharm Community Edition 2021.1.3\plugins\python-ce\helpers\pycharm\_jb_pytest_runner.py" --path C:/Users/Vasele/PycharmProjects/python_training/bdd/group_scenarios.py
+Testing started at 22:33 ...
+Launching pytest with arguments C:/Users/Vasele/PycharmProjects/python_training/bdd/group_scenarios.py --no-header --no-summary -q in C:\Users\Vasele\PycharmProjects\python_training\bdd
+
+============================= test session starts =============================
+collecting ... collected 1 item
+
+group_scenarios.py::test_add_new_group[name1-header1-footer1] <- ..\env\lib\site-packages\pytest_bdd\scenario.py FAILED [100%]
+..\env\lib\site-packages\pytest_bdd\scenario.py:170 (test_add_new_group[name1-header1-footer1])
+self = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+argname = 'pytestbdd_given_a group with name1, header1 and footer1'
+
+    def _get_active_fixturedef(
+        self, argname: str
+    ) -> Union["FixtureDef[object]", PseudoFixtureDef[object]]:
+        try:
+>           return self._fixture_defs[argname]
+E           KeyError: 'pytestbdd_given_a group with name1, header1 and footer1'
+
+..\env\lib\site-packages\_pytest\fixtures.py:589: KeyError
+
+During handling of the above exception, another exception occurred:
+
+request = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+step = <pytest_bdd.parser.Step object at 0x000001C9310B7A90>
+scenario = <pytest_bdd.parser.Scenario object at 0x000001C9310B7B50>
+
+    def _find_step_function(request, step, scenario):
+        """Match the step defined by the regular expression pattern.
+    
+        :param request: PyTest request object.
+        :param step: Step.
+        :param scenario: Scenario.
+    
+        :return: Function of the step.
+        :rtype: function
+        """
+        name = step.name
+        try:
+            # Simple case where no parser is used for the step
+>           return request.getfixturevalue(get_step_fixture_name(name, step.type))
+
+..\env\lib\site-packages\pytest_bdd\scenario.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+argname = 'pytestbdd_given_a group with name1, header1 and footer1'
+
+    def getfixturevalue(self, argname: str) -> Any:
+        """Dynamically run a named fixture function.
+    
+        Declaring fixtures via function argument is recommended where possible.
+        But if you can only decide whether to use another fixture at test
+        setup time, you may use this function to retrieve it inside a fixture
+        or test function body.
+    
+        :raises pytest.FixtureLookupError:
+            If the given fixture could not be found.
+        """
+>       fixturedef = self._get_active_fixturedef(argname)
+
+..\env\lib\site-packages\_pytest\fixtures.py:581: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+argname = 'pytestbdd_given_a group with name1, header1 and footer1'
+
+    def _get_active_fixturedef(
+        self, argname: str
+    ) -> Union["FixtureDef[object]", PseudoFixtureDef[object]]:
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+>               fixturedef = self._getnextfixturedef(argname)
+
+..\env\lib\site-packages\_pytest\fixtures.py:592: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+argname = 'pytestbdd_given_a group with name1, header1 and footer1'
+
+    def _getnextfixturedef(self, argname: str) -> "FixtureDef[Any]":
+        fixturedefs = self._arg2fixturedefs.get(argname, None)
+        if fixturedefs is None:
+            # We arrive here because of a dynamic call to
+            # getfixturevalue(argname) usage which was naturally
+            # not known at parsing/collection time.
+            assert self._pyfuncitem.parent is not None
+            parentid = self._pyfuncitem.parent.nodeid
+            fixturedefs = self._fixturemanager.getfixturedefs(argname, parentid)
+            # TODO: Fix this type ignore. Either add assert or adjust types.
+            #       Can this be None here?
+            self._arg2fixturedefs[argname] = fixturedefs  # type: ignore[assignment]
+        # fixturedefs list is immutable so we maintain a decreasing index.
+        index = self._arg2index.get(argname, 0) - 1
+        if fixturedefs is None or (-index > len(fixturedefs)):
+>           raise FixtureLookupError(argname, self)
+E           _pytest.fixtures.FixtureLookupError: ('pytestbdd_given_a group with name1, header1 and footer1', <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>)
+
+..\env\lib\site-packages\_pytest\fixtures.py:473: FixtureLookupError
+
+During handling of the above exception, another exception occurred:
+
+request = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+_pytest_bdd_example = {'footer': 'footer1', 'header': 'header1', 'name': 'name1'}
+
+    @pytest.mark.usefixtures(*args)
+    def scenario_wrapper(request, _pytest_bdd_example):
+        scenario = templated_scenario.render(_pytest_bdd_example)
+>       _execute_scenario(feature, scenario, request)
+
+..\env\lib\site-packages\pytest_bdd\scenario.py:174: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\env\lib\site-packages\pytest_bdd\scenario.py:138: in _execute_scenario
+    step_func = _find_step_function(request, step, scenario)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = <FixtureRequest for <Function test_add_new_group[name1-header1-footer1]>>
+step = <pytest_bdd.parser.Step object at 0x000001C9310B7A90>
+scenario = <pytest_bdd.parser.Scenario object at 0x000001C9310B7B50>
+
+    def _find_step_function(request, step, scenario):
+        """Match the step defined by the regular expression pattern.
+    
+        :param request: PyTest request object.
+        :param step: Step.
+        :param scenario: Scenario.
+    
+        :return: Function of the step.
+        :rtype: function
+        """
+        name = step.name
+        try:
+            # Simple case where no parser is used for the step
+            return request.getfixturevalue(get_step_fixture_name(name, step.type))
+        except FixtureLookupError:
+            try:
+                # Could not find a fixture with the same name, let's see if there is a parser involved
+                name = find_argumented_step_fixture_name(name, step.type, request._fixturemanager, request)
+                if name:
+                    return request.getfixturevalue(name)
+                raise
+            except FixtureLookupError:
+>               raise exceptions.StepDefinitionNotFoundError(
+                    f"Step definition is not found: {step}. "
+                    f'Line {step.line_number} in scenario "{scenario.name}" in the feature "{scenario.feature.filename}"'
+                )
+E               pytest_bdd.exceptions.StepDefinitionNotFoundError: Step definition is not found: Given "a group with name1, header1 and footer1". Line 3 in scenario "Add new group" in the feature "C:\Users\Vasele\PycharmProjects\python_training\bdd\groups.feature"
+
+..\env\lib\site-packages\pytest_bdd\scenario.py:86: StepDefinitionNotFoundError
+
+
+
+group_scenarios.py::test_add_new_group[name1-header1-footer1] <- ..\env\lib\site-packages\pytest_bdd\scenario.py ERROR [100%]
+..\env\lib\site-packages\pytest_bdd\scenario.py:170 (test_add_new_group[name1-header1-footer1])
+def fin():
+>       fixture.session.ensure_logout()
+E       AttributeError: 'NoneType' object has no attribute 'session'
+
+..\conftest.py:50: AttributeError
+
+
+=================== 1 failed, 2 warnings, 1 error in 0.23s ====================
+
+Process finished with exit code 1
+
+
+
+
